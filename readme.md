@@ -29,4 +29,14 @@ Others：其他类别，用于归类那些不易直接归入上述任何一个�
 
 7. 分析每种蛋白，在0和1类别之间的差异显著性，Mann-Whitney Utest，因为有蛋白表现为非正态性。（应尝试多种差异性分析方法）
 
-8. 
+8. 2024年12月4日13:58:47  使用差异显著的蛋白，MLP_attention:
+Test Accuracy: 0.6500
+Confusion Matrix:
+ [[12  8]
+ [ 6 14]]
+Precision: 0.6515
+Recall: 0.6500
+F1 Score: 0.6491
+ROC AUC: 0.6925
+9.  2024年12月4日14:14:40 根据二分类cluster进行临床特征可视化(在cluster/twucluster_clinical/res)
+10. 开始对7尝试多种差异分析方法
