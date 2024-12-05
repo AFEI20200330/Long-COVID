@@ -1,62 +1,55 @@
 1. 2024.12.3 14:55 按照功能对蛋白质进行分类（未完成转2）
-2. 2024年12月3日15:18:22 爬虫 所有的蛋白质功能  uniprot.py  
+2. 2024年12月3日15:18:22 爬虫 所有的蛋白质功能  uniprot.py
 3. 2024年12月3日18:30:19 得到output共有4458个不同UniProt,源文件是有4511个不同的target
 4. 对这4458个UniProt进行分类(output.xlsx)
-Structural：结构性蛋白，指的是那些主要提供细胞或组织结构支持的蛋白质。
-Enzyme：酶类蛋白，这类蛋白质能催化生物化学反应。
-Transcription Factor：转录因子，这类蛋白质主要参与调控基因的表达。
-Signal Transduction：信号传导，涉及传递和放大细胞内外的信号。
-Immune System：免疫系统相关蛋白，参与身体的免疫反应。
-Transport：运输蛋白，负责物质的运输和跨膜转运。
-Cell Cycle：细胞周期相关蛋白，参与细胞生长、分裂的调控。
-Apoptosis：凋亡相关蛋白，参与调控细胞的程序性死亡。
-Metabolic Process：代谢过程相关蛋白，参与细胞的代谢活动。
-Others：其他类别，用于归类那些不易直接归入上述任何一个类别的蛋白质。
-
+   Structural：结构性蛋白，指的是那些主要提供细胞或组织结构支持的蛋白质。
+   Enzyme：酶类蛋白，这类蛋白质能催化生物化学反应。
+   Transcription Factor：转录因子，这类蛋白质主要参与调控基因的表达。
+   Signal Transduction：信号传导，涉及传递和放大细胞内外的信号。
+   Immune System：免疫系统相关蛋白，参与身体的免疫反应。
+   Transport：运输蛋白，负责物质的运输和跨膜转运。
+   Cell Cycle：细胞周期相关蛋白，参与细胞生长、分裂的调控。
+   Apoptosis：凋亡相关蛋白，参与调控细胞的程序性死亡。
+   Metabolic Process：代谢过程相关蛋白，参与细胞的代谢活动。
+   Others：其他类别，用于归类那些不易直接归入上述任何一个类别的蛋白质。
 5. 计算了不同功能类别在每个聚类中蛋白质的平均表达水平。下面是不同聚类的蛋白质功能类别平均表达情况：
-功能类别         	      聚类 0 的平均表达水平	聚类 1 的平均表达水平
-凋亡（Apoptosis）	       10.79	              10.80
-细胞周期（Cell Cycle）       10.78	              10.80
-酶（Enzyme）     	       10.65	              10.65
-免疫系统（Immune System）	   10.88        	      10.90
-代谢过程（Metabolic Process）10.31	              10.30
-其他（Others）	           10.54	              10.54
-信号传导（Signal Transduction）10.57	              10.58
-结构性（Structural）	       10.48	              10.50
-转录因子（Transcription Factor）10.45	              10.44
-运输（Transport）	        10.36	              10.37
-尽管两个聚类之间的蛋白质表达差异不大，但某些功能类别（如免疫系统和细胞周期）在聚类 1 中略微高于聚类 0。这些差异可能反映了不同聚类中生物学过程的微妙变化。
-
-7. 分析每种蛋白，在0和1类别之间的差异显著性，Mann-Whitney Utest，因为有蛋白表现为非正态性。（应尝试多种差异性分析方法）
-
-8. 2024年12月4日13:58:47  使用差异显著的蛋白，MLP_attention:
-Test Accuracy: 0.6500
-Confusion Matrix:
- [[12  8]
- [ 6 14]]
-Precision: 0.6515
-Recall: 0.6500
-F1 Score: 0.6491
-ROC AUC: 0.6925
-
-9.  2024年12月4日14:14:40 根据二分类cluster进行临床特征可视化(在cluster/twucluster_clinical/res)
-
-10. 开始对7尝试多种差异分析方法(服从正态分布的使用t-test，不服从的使用manu)
-结果有157个蛋白,并完成了可视化
-
-11. 根据二分类对临床特征进行差异分析()
-
-12. 2024年12月4日17:28:38将四聚类标签作为特征数据
+   功能类别         	      聚类 0 的平均表达水平	聚类 1 的平均表达水平
+   凋亡（Apoptosis）	       10.79	              10.80
+   细胞周期（Cell Cycle）       10.78	              10.80
+   酶（Enzyme）     	       10.65	              10.65
+   免疫系统（Immune System）	   10.88        	      10.90
+   代谢过程（Metabolic Process）10.31	              10.30
+   其他（Others）	           10.54	              10.54
+   信号传导（Signal Transduction）10.57	              10.58
+   结构性（Structural）	       10.48	              10.50
+   转录因子（Transcription Factor）10.45	              10.44
+   运输（Transport）	        10.36	              10.37
+   尽管两个聚类之间的蛋白质表达差异不大，但某些功能类别（如免疫系统和细胞周期）在聚类 1 中略微高于聚类 0。这些差异可能反映了不同聚类中生物学过程的微妙变化。
+6. 分析每种蛋白，在0和1类别之间的差异显著性，Mann-Whitney Utest，因为有蛋白表现为非正态性。（应尝试多种差异性分析方法）
+7. 2024年12月4日13:58:47  使用差异显著的蛋白，MLP_attention:
+   Test Accuracy: 0.6500
+   Confusion Matrix:
+   [[12  8]
+   [ 6 14]]
+   Precision: 0.6515
+   Recall: 0.6500
+   F1 Score: 0.6491
+   ROC AUC: 0.6925
+8. 2024年12月4日14:14:40 根据二分类cluster进行临床特征可视化(在cluster/twucluster_clinical/res)
+9. 开始对7尝试多种差异分析方法(服从正态分布的使用t-test，不服从的使用manu)
+   结果有157个蛋白,并完成了可视化
+10. 根据二分类对临床特征进行差异分析()
+11. 2024年12月4日17:28:38将四聚类标签作为特征数据
 
 13.分析不同的cluster中updated——cluster的分布
-![img_1.png](img_1.png)
+![img_1.png](assets/img_1.png)
 
 14. 2024年12月4日18:05:51 阅读论文
-Fay：
-某些药物的使用是否会影响长新冠症状表现 比如：
-MED_HYDROXYCHLOROQUINE
-MED_METHYLPREDNISOLONE
-MED_REMDESIVIR
+    Fay：
+    某些药物的使用是否会影响长新冠症状表现 比如：
+    MED_HYDROXYCHLOROQUINE
+    MED_METHYLPREDNISOLONE
+    MED_REMDESIVIR
 
 Fay:
 https://www.mdpi.com/1999-4915/16/7/1060
@@ -74,9 +67,8 @@ https://www.tandfonline.com/doi/full/10.1080/22221751.2024.2361791
 
 测试的分类器包括随机森林、梯度提升、逻辑回归（包括 LASSO 和岭回归）、朴素贝叶斯（高斯）、决策树、神经网络（多层感知器 (MLP)）、K 最近邻、支持向量和额外树。这些算法的选择基于它们在医疗保健预测模型中已证实的效用 [引用54–57 ]并使用 Scikit-Learn 进行评估[引用58 ]。
 
-
 15. 从两个维维度分别分析每个症状以及每种类别的病症发生率
-每种症状的总体发生率如下（百分比形式）：
+    每种症状的总体发生率如下（百分比形式）：
 
 乏力或疲劳：43.43%
 记忆或思维问题：37.45%
@@ -100,7 +92,6 @@ https://www.tandfonline.com/doi/full/10.1080/22221751.2024.2361791
 喉咙痛：5.98%
 肺炎：3.98%
 肝脏问题：2.39%
-
 
 每个聚类类别中各症状的发生率如下（百分比形式）：
 
@@ -155,3 +146,113 @@ https://www.tandfonline.com/doi/full/10.1080/22221751.2024.2361791
 
 可视化见 cluster/output (62).png
 
+16. 对四聚类的结果对应的蛋白组学数据进行差异分析，
+17. 2024年12月5日15:49:46使用所有的蛋白质与重新筛选则临床数据进行二聚类结果预测
+18. 2024年12月5日19:41:16  评估所有模型使用PCA之后的模型分类效果，包括所有指标including specificity。部分模型表现很好，现在正在解决结果不可复现的问题和全部参数的问题
+    准备结果解释（技术选型，XAI：树模型有自己的特征解释，SHAP、PDP）可视化技术（PCA，t-SNE）
+19. 循环参数选择得到初步最优模型：随机森林、XGB、LGBM
+    Accuracy: 0.8
+    Precision: 0.8095238095238095
+    Recall: 0.7727272727272727
+    Specificity: 0.8260869565217391
+    F1 Score: 0.7906976744186046
+    ROC AUC: 0.8221343873517787![image.png](assets/image.png)
+
+```
+
+```
+
+![image.png](assets/image2.png?t=1733400091642)
+
+超参数'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None,
+'criterion': 'entropy', 'max_depth': 15, 'max_features': 'sqrt',
+'max_leaf_nodes': None, 'max_samples': None,
+'min_impurity_decrease': 0.0, 'min_samples_leaf': 5,
+'min_samples_split': 10, 'min_weight_fraction_leaf': 0.0,
+'monotonic_cst': None, 'n_estimators': 50, 'n_jobs': None,
+'oob_score': False, 'random_state': None, 'verbose': 0,
+'warm_start': False, 'random_state':42
+
+XGBoost
+
+Accuracy: 0.7777777777777778
+Precision: 0.8
+Recall: 0.7272727272727273
+Specificity: 0.8260869565217391
+F1 Score: 0.761904761904762
+ROC AUC: 0.7865612648221344
+
+![image.png](assets/image3.png)
+
+![image.png](assets/image4.png)
+
+{'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'entropy', 'max_depth': None, 'max_features': 'sqrt', 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 5, 'min_samples_split': 5, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 150, 'n_jobs': None, 'oob_score': False, 'random_state': None, 'verbose': 0, 'warm_start': False}
+
+LGBM
+
+Accuracy: 0.7777777777777778
+Precision: 0.7142857142857143
+Recall: 0.9090909090909091
+Specificity: 0.6521739130434783
+F1 Score: 0.8
+ROC AUC: 0.8913043478260869
+
+![image.png](assets/image6.png)
+
+![image.png](assets/image5.png)
+
+CatBoost
+
+Accuracy: 0.8
+Precision: 0.9333333333333333
+Recall: 0.6363636363636364
+Specificity: 0.9565217391304348
+F1 Score: 0.7567567567567568
+ROC AUC: 0.8715415019762847
+
+![image.png](assets/image12-5-9.png)
+
+
+![image.png](assets/image12-5-10.png)
+
+
+
+21. 2024年12月5日20:36:05 正在尝试结果解释shap，使用了pca就只能显示主成分的名称，无法显示原名称
+
+lgbm-pca
+
+![image.png](assets/image12-5-1.png)
+
+12-5-2
+
+![image.png](assets/image12-5-2.png)
+
+![image.png](assets/image12-5-3.png)
+
+RF
+
+![image.png](assets/image12-5-6.png)
+
+![image.png](assets/image12-5-7.png)
+
+![image.png](assets/image12-5-8.png)
+
+CatBoost
+
+![image.png](assets/image15-5-11.png)
+
+![image.png](assets/image15-5-12.png)
+
+
+RF without pca
+
+Accuracy: 0.6666666666666666
+Precision: 0.6666666666666666
+Recall: 0.6363636363636364
+Specificity: 0.6956521739130435
+F1 Score: 0.6511627906976744
+ROC AUC: 0.7015810276679844
+
+![image.png](assets/image12-5-13.png)
+
+28. 不使用pca，通过所有原始特征进行最佳模型选择
