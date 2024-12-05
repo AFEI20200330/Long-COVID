@@ -17,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 数据加载和预处理
-data_path = '../significant_proteins_data.xlsx'  # 更新为实际路径
+data_path = '../updated_significant_proteins_data.xlsx'  # 更新为实际路径
 data = pd.read_excel(data_path)
 X = data.drop(['Target_new', 'Blood_Sample_ID', 'Cluster'], axis=1)
 y = data['Cluster']
@@ -176,7 +176,6 @@ models_params = {
             'max_depth': [3, 5, 7, 9],
             'learning_rate': [0.01, 0.05, 0.1, 0.2],
             'subsample': [0.5, 0.7, 0.9],
-            'colsample_bytree': [0.5, 0.7, 0.9]
         }
     },
     'CatBoostClassifier': {
@@ -240,4 +239,4 @@ results_df = pd.DataFrame(results)
 print(results_df)
 
 # 可以将结果保存到Excel
-results_df.to_excel('res/model_evaluation_results.xlsx',index=False)
+results_df.to_excel('res2/model_evaluation_results.xlsx',index=False)
