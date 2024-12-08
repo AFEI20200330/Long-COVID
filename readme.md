@@ -156,11 +156,9 @@ https://www.tandfonline.com/doi/full/10.1080/22221751.2024.2361791
     Recall: 0.7727272727272727
     Specificity: 0.8260869565217391
     F1 Score: 0.7906976744186046
-    ROC AUC: 0.8221343873517787![image.png](assets/image.png)
+    ROC AUC: 0.8221343873517787
 
-```
-
-```
+    ![image.png](assets/image.png)
 
 ![image.png](assets/image2.png?t=1733400091642)
 
@@ -212,10 +210,7 @@ ROC AUC: 0.8715415019762847
 
 ![image.png](assets/image12-5-9.png)
 
-
 ![image.png](assets/image12-5-10.png)
-
-
 
 21. 2024年12月5日20:36:05 正在尝试结果解释shap，使用了pca就只能显示主成分的名称，无法显示原名称
 
@@ -243,7 +238,6 @@ CatBoost
 
 ![image.png](assets/image15-5-12.png)
 
-
 RF without pca
 
 Accuracy: 0.6666666666666666
@@ -256,3 +250,187 @@ ROC AUC: 0.7015810276679844
 ![image.png](assets/image12-5-13.png)
 
 28. 不使用pca，通过所有原始特征进行最佳模型选择
+
+XGB
+
+rf_params = {'objective': 'binary:logistic', 'base_score': None,
+'booster': None, 'callbacks': None, 'colsample_bylevel': None,
+'colsample_bynode': None, 'colsample_bytree': 0.7, 'device': None,
+'early_stopping_rounds': None, 'enable_categorical': False,
+'eval_metric': None, 'feature_types': None, 'gamma': 0.5,
+'grow_policy': None, 'importance_type': None, 'interaction_constraints': None,
+'learning_rate': 0.01, 'max_bin': None, 'max_cat_threshold': None,
+'max_cat_to_onehot': None, 'max_delta_step': None, 'max_depth': 3,
+'max_leaves': None, 'min_child_weight': None, 'missing': nan,
+'monotone_constraints': None, 'multi_strategy': None, 'n_estimators': 50,
+'n_jobs': None, 'num_parallel_tree': None, 'random_state': None,
+'reg_alpha': None, 'reg_lambda': None, 'sampling_method': None,
+'scale_pos_weight': None, 'subsample': 0.5, 'tree_method': None,
+'validate_parameters': None, 'verbosity': None}
+
+Accuracy: 0.7555555555555555
+Precision: 0.6896551724137931
+Recall: 0.9090909090909091
+Specificity: 0.6086956521739131
+F1 Score: 0.7843137254901961
+ROC AUC: 0.8201581027667985
+
+![image.png](assets/image1266.png)
+
+![image.png](assets/image1262.png)
+
+![image.png](assets/image12-6-1.png)
+
+![image.png](assets/image1260.png)
+
+![image.png](assets/image1264.png)
+
+![image.png](assets/image1265.png)
+
+
+MLP
+
+Accuracy: 0.6666666666666666
+Precision: 0.6129032258064516
+Recall: 0.8636363636363636
+Specificity: 0.4782608695652174
+F1 Score: 0.7169811320754716
+ROC AUC: 0.824110671936759
+
+![image.png](assets/image1267.png)
+
+![image.png](assets/image1268.png)
+
+![image.png](assets/image1269.png)
+
+![image.png](assets/image12610.png)
+
+
+22.已经证明了是否使用pca，均有最佳模型与效果出现，那么现在开始系统的进行实验，包括保存混淆矩阵，SHAP图和SHAP值、ROC曲线。
+
+还要实验预测因子的统计分析
+
+具体的：
+
+* 对所有模型逐个实验，因为每个模型的SHAP输出方式是不同的
+* 对每个模型是否使用PCA进行降维，分别进行实验
+* 每次实验都要保存ROC曲线、评估指标、SHAP图和SHAP值xlsx
+* 使用网格搜索，过采样
+
+先实验长新冠聚类预测的
+
+后面可以尝试ICU（511，有131进ICU、死亡率（473 有72死亡），严重程度分类（405），忽略新冠的严重程度（4460SOFA评分（511）
+
+
+
+
+
+
+
+23. 对数据进行特征编码，便于后面对ICU、死亡率的实验：
+
+    ### 编码映射：
+
+    1. 
+    
+
+| Sex    |      |
+| ------ | ---- |
+| Male   |      |
+| Female |      |
+
+
+
+| Race_From_Consent                          |      |
+| ------------------------------------------ | ---- |
+| Black or African American                  | 0    |
+| Asian                                      | 2    |
+| American  Indian/Alaska Native             | 3    |
+| White                                      | 1    |
+| Native Hawaiian or  Other Pacific Islander | 4    |
+| More Than One Race                         | 5    |
+| Unknown/Prefer not to say                  | 6    |
+|                                            |      |
+
+| Ethnicity_From_Consent     |      |
+| -------------------------- | ---- |
+| NOT Hispanic or Latino     | 0    |
+| Hispanic or Latino         | 1    |
+| Unknown/Prefer not to  say | 3    |
+
+| Patient_Classification_At_First_Sample |      |
+| -------------------------------------- | ---- |
+| SARS-CoV-2_Positive_Ab_Positive        | 0    |
+| SARS-CoV-2_Positive_Ab_Negative        | 1    |
+| SARS-CoV-2_Positive_Ab_Unknown         | 2    |
+| SARS-CoV-2_Negative_Ab_Negative        | 3    |
+| SARS-CoV-2_Negative_Ab_Positive        | 4    |
+| SARS-CoV-2_Negative_Ab_Unknown         | 5    |
+| SARS-CoV-2_Unknown_Ab_Positive         | 6    |
+| SARS-CoV-2_Unknown_Ab_Negative         | 7    |
+|                                        |      |
+
+| Severity                 |      |
+| ------------------------ | ---- |
+| Moderate COVID-19        | 0    |
+| Severe COVID-19          | 1    |
+| Severe COVID-19 with EOD | 2    |
+|                          |      |
+
+
+
+| Severity_Ignoring_COVID19_Status |      |
+| -------------------------------- | ---- |
+| Moderate COVID-19                | 0    |
+| Severe COVID-19Severe COVID-19   | 1    |
+| Severe COVID-19 with EOD         | 2    |
+
+| VENTILATION_TYPE         |      |
+| ------------------------ | ---- |
+| SUPPLEMENTAL_O2          | 0    |
+| NONE_ROOM_AIR            | 1    |
+| INVASIVE_VENTILATION     | 2    |
+| NON_INVASIVE_VENTILATION |      |
+
+| COVID19_Any_Antibody_Detected |      |
+| ----------------------------- | ---- |
+| Not Detected                  | 0    |
+| Detected                      | 1    |
+| Marginally Detected           | 2    |
+|                               |      |
+
+| COVID19_Most_Recent_Antibody_Result |      |
+| ----------------------------------- | ---- |
+| Not Detected                        | 0    |
+| Detected                            | 1    |
+| Marginally Detected                 | 2    |
+|                                     |      |
+
+| COVID19_Most_Recent_Order_Result |      |
+| -------------------------------- | ---- |
+| NOT DETECTED                     | 0    |
+| DETECTED                         | 1    |
+| PRESUMPTIVE  POSITIVE            | 2    |
+
+| COVID19_Symptoms_At_Presentation_Reviewed |      |
+| ----------------------------------------- | ---- |
+| COVID19_Symptoms                          | 0    |
+| Unreviewed                                |      |
+| Unreviewed                                |      |
+| Unreviewed                                |      |
+| COVID19_Symptoms                          |      |
+| No_COVID19_Symptoms                       | 1    |
+
+| SARSCoV2_Recovery_Status |      |
+| ------------------------ | ---- |
+| Not_Recovered            | 0    |
+| Recovered                | 1    |
+| Unknown                  | 2    |
+
+| SMOKING_STATUS    |      |
+| ----------------- | ---- |
+| YES               | 0    |
+| QUIT              | 1    |
+| NEVER             | 2    |
+| NOT ASKED or 空白 | 3    |
+|                   |      |

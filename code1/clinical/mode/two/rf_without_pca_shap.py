@@ -16,6 +16,7 @@ data = pd.read_excel('../../merged_data.xlsx')
 # 分离特征和目标
 features = data.drop(columns=['Target_new', 'Blood_Sample_ID', 'Cluster'])
 target = data['Cluster']
+feature_names = features.columns  # 保存特征名称
 
 # 标准化特征
 scaler = StandardScaler()
@@ -37,15 +38,24 @@ target_resampled = np.hstack((target[target == 0], target_class_1_upsampled))
 # 划分训练和测试集
 X_train, X_test, y_train, y_test = train_test_split(features_resampled, target_resampled, test_size=0.2, random_state=42, stratify=target_resampled)
 
+# # 随机森林模型配置和实例化
+# rf_params = {'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None,
+#              'criterion': 'entropy', 'max_depth': 15, 'max_features': 'sqrt',
+#              'max_leaf_nodes': None, 'max_samples': None,
+#              'min_impurity_decrease': 0.0, 'min_samples_leaf': 5,
+#              'min_samples_split': 10, 'min_weight_fraction_leaf': 0.0,
+#              'monotonic_cst': None, 'n_estimators': 50, 'n_jobs': None,
+#              'oob_score': False, 'random_state': None, 'verbose': 0,
+#              'warm_start': False, 'random_state':42}
 # 随机森林模型配置和实例化
-rf_params = {'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None,
-             'criterion': 'entropy', 'max_depth': 15, 'max_features': 'sqrt',
-             'max_leaf_nodes': None, 'max_samples': None,
-             'min_impurity_decrease': 0.0, 'min_samples_leaf': 5,
-             'min_samples_split': 10, 'min_weight_fraction_leaf': 0.0,
-             'monotonic_cst': None, 'n_estimators': 50, 'n_jobs': None,
-             'oob_score': False, 'random_state': None, 'verbose': 0,
-             'warm_start': False, 'random_state':42}
+rf_params ={'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None,
+            'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt',
+            'max_leaf_nodes': None, 'max_samples': None,
+            'min_impurity_decrease': 0.0, 'min_samples_leaf': 2,
+            'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0,
+            'monotonic_cst': None, 'n_estimators': 50, 'n_jobs': None,
+            'oob_score': False, 'random_state': None, 'verbose': 0,
+            'warm_start': False,'random_state':42}
 rf_model = RandomForestClassifier(**rf_params)
 rf_model.fit(X_train, y_train)
 
@@ -57,13 +67,13 @@ shap_values = explainer(X_test)
 shap_values_class1 = shap_values[:, :, 1]
 # 绘制整个测试集的SHAP值
 plt.figure(figsize=(12,8))
-shap.summary_plot(shap_values_class1, X_test, plot_type="bar",show=False)
+shap.summary_plot(shap_values_class1, X_test,feature_names=feature_names, plot_type="bar",show=False)
 plt.gcf().subplots_adjust(left=0.35)  # 调整左边距来留出更多空间显示特征名称
 plt.show()
 plt.close()
 
 plt.figure(figsize=(16,10))
-shap.plots.waterfall(shap_values_class1[0],max_display=20,show=False)
+shap.waterfall_plot(shap_values_class1[0], max_display=20,show=False)
 ax = plt.gca()
 pos = ax.get_position()
 # 调整左边距，其他参数保持不变
