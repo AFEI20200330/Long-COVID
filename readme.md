@@ -1,3 +1,5 @@
+It's a research record about Long-COVID sysptoms accrording the hospital record using ML and cluster.
+
 1. 2024.12.3 14:55 按照功能对蛋白质进行分类（未完成转2）
 2. 2024年12月3日15:18:22 爬虫 所有的蛋白质功能  uniprot.py
 3. 2024年12月3日18:30:19 得到output共有4458个不同UniProt,源文件是有4511个不同的target
